@@ -1,10 +1,10 @@
 open Or_errors.Std
  
-module Impl : RESULT with type ('ok, 'err) t = ('ok, 'err) CCError.t = 
+module Impl =
 struct
 module R = CCError
 module Opt = CCOpt
-type ('ok, 'err) t = ('ok, 'err) R.t
+include CCError
 
 let ok = function | `Ok t -> Some t | `Error t -> None
 let error = function | `Ok _ -> None | `Error t -> Some t
@@ -36,5 +36,10 @@ module Monad_infix = struct
 end
 include Monad_infix
 end
+
+module Signature : RESULT = 
+  struct 
+    include Impl
+  end
 
 include Impl
