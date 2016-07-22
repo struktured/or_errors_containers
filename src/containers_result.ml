@@ -24,7 +24,7 @@ let all l =
  R.map_l f l
 let all_ignore t = map ~f:(fun (t:unit list) -> ()) (all t)
 let ignore x = map x ~f:(fun _ ->())
-let both x y = 
+let both x y =
   match x,y with 
    | `Ok o, `Ok o' -> R.return (o, o')
    | `Ok _, `Error  e -> R.fail e
@@ -35,20 +35,17 @@ module Monad_infix = struct
   let (>>=) t f = bind t f
 end
 include Monad_infix
-let pp a_ft b_ft ft (t:('a,'b) t) : (unit,unit) t=
-  map ~f:(a_ft ft) t |> map_error ~f:(b_ft ft)
-
-let show a_ft b_ft t : (string, string) t=
-  Format.flush_str_formatter() |> 
-  fun _ -> pp a_ft b_ft Format.str_formatter t |>
-  map ~f:Format.flush_str_formatter |> 
-  map_error ~f:Format.flush_str_formatter
-
 end
 
-module Signature : RESULT =
-  struct 
-    include Impl
+module I = struct
+ include Impl
+ include (Or_errors.Result.Showable.Make(Impl) :
+   Or_errors.Result.Showable.S with type ('a,'b) t := ('a,'b) t)
+end
+
+module Signature : Or_errors.Result.SHOWABLE =
+  struct
+    include I
   end
 
-include Impl
+include I
