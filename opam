@@ -22,5 +22,5 @@ remove: [
 ]
 
 depends: [
-  "ocamlfind" "containers" "or_errors"
+  "ocamlbuild" {build} "ocamlfind" "containers" "or_errors"
 ]
