@@ -35,9 +35,18 @@ module Monad_infix = struct
   let (>>=) t f = bind t f
 end
 include Monad_infix
+let pp a_ft b_ft ft (t:('a,'b) t) : (unit,unit) t=
+  map ~f:(a_ft ft) t |> map_error ~f:(b_ft ft)
+
+let show a_ft b_ft t : (string, string) t=
+  Format.flush_str_formatter() |> 
+  fun _ -> pp a_ft b_ft Format.str_formatter t |>
+  map ~f:Format.flush_str_formatter |> 
+  map_error ~f:Format.flush_str_formatter
+
 end
 
-module Signature : RESULT = 
+module Signature : RESULT =
   struct 
     include Impl
   end
