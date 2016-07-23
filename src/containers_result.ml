@@ -39,11 +39,11 @@ end
 
 module I = struct
  include Impl
- include (Or_errors.Result.Showable.Make(Impl) :
-   Or_errors.Result.Showable.S with type ('a,'b) t := ('a,'b) t)
+ include (Result.Showable.Make(Impl) :
+   Result.Showable.S with type ('a,'b) t := ('a,'b) t)
 end
 
-module Signature : Or_errors.Result.SHOWABLE =
+module Signature : Result.SHOWABLE =
   struct
     include I
   end

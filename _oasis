@@ -9,10 +9,10 @@ BuildTools:  ocamlbuild
 Plugins: META (0.4), DevFiles (0.4)
 
 Library "or_errors_containers"
-  Pack: true
+  Pack:               false
   Build:              true
   Path:               src
-  Modules:            Containers_result, Containers_error, Containers_or_error
+  Modules:            Containers_result, Containers_error, Containers_or_error, Or_errors_containers
   BuildDepends:       containers, or_errors
 
 AlphaFeatures : ocamlbuild_more_args
